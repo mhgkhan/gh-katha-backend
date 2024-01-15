@@ -2,6 +2,8 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import express from 'express';
+import cors from 'cors';
+
 const app = express();
 
 // imports 
@@ -20,6 +22,7 @@ const DBURI = app.get("env") == "development" ? process.env.DBURILOCAL : process
 
 
 app.use(express.json());
+app.use(cors())
 connectToDb(DBURI);
 
 
