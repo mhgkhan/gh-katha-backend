@@ -13,6 +13,7 @@ import SMH from './controllers/StartMiddleWareHandler.js';
 // imported routes 
 import getApiRoutes from './routes/getApiRoutes.js';
 import AuthRouter from './routes/Auth.js';
+import ExtraRouter from './routes/ExtraRoute.js';
 
 
 const PORT = process.env.PORT || 4000;
@@ -29,8 +30,10 @@ connectToDb(DBURI);
 app.use((req, res, next) => SMH(req, res, next));
 
 
+// ROUTES 
 app.use("/api/get/", getApiRoutes);
 app.use("/api/auth", AuthRouter);
+app.use("/api/extra/", ExtraRouter);
 
 
 
