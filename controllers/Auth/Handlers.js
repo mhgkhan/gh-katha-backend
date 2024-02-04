@@ -4,7 +4,7 @@ import JWT from 'jsonwebtoken';
 
 
 import UserAccountModel from "../../Models/UserAccount.js";
-import { checkIfuserExists, postDataValidation } from "../../middlewares/utilityFunctions.js";
+import { checkIfuserExists, checkJWTandeCheckIsValid, postDataValidation } from "../../middlewares/utilityFunctions.js";
 class handleAuthRoutes {
 
 
@@ -37,7 +37,7 @@ class handleAuthRoutes {
                         const username = `${email.substring(0, email.indexOf("@"))}-${cryptoRandom}`;
                         // console.log("username", username, "password = ", password)
 
-                        const addingData = new UserAccountModel({ username, cnic, phone, email, password:newPassword })
+                        const addingData = new UserAccountModel({ username, cnic, phone, email, password: newPassword })
                         try {
                             await addingData.save();
                         } catch (error) {
@@ -117,22 +117,12 @@ class handleAuthRoutes {
     static handleCheck = async (req, res) => {
         try {
             let token;
-            req.headers['token'] ? token = req.headers['token'] : res.status(401).json({ success: false })
-            // console.log(token)
-            const checKingToken = JWT.verify(token, process.env.SECRET_KEY_LOCAL);
-            const {cnic} = checKingToken;
+            req.headers['token'] ? token = req.headers['token'] : res.status(401).json({ success: false });
 
-            const checkingCnic = await checkIfuserExists(cnic);
+            const checkingUser = await checkJWTandeCheckIsValid(token);
 
-
-            if(checkingCnic.status) return res.status(200).json({success:true,cnic:cnic});
-            else{
-                return res.status(401).json({success:false})
-            }
-
-
-
-
+            if (checkingUser.status) return res.status(200).json({ success: true, cnic: checkingUser.cnic })
+            else return res.status(401).json({ success: false, message: "User is not authorized." })
 
         } catch (error) {
             return res.status(500).json({ success: false })

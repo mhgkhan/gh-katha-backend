@@ -14,6 +14,8 @@ import SMH from './controllers/StartMiddleWareHandler.js';
 import getApiRoutes from './routes/getApiRoutes.js';
 import AuthRouter from './routes/Auth.js';
 import ExtraRouter from './routes/ExtraRoute.js';
+import KathaOperationssRouter from './routes/KathaOperationosRoute.js';
+import ShortThingsRouter from './routes/ShortThingsRoutes.js';
 
 
 const PORT = process.env.PORT || 4000;
@@ -23,6 +25,7 @@ const DBURI = app.get("env") == "development" ? process.env.DBURILOCAL : process
 
 
 app.use(express.json());
+app.use(express.urlencoded({extended:false}))
 app.use(cors())
 connectToDb(DBURI);
 
@@ -34,6 +37,8 @@ app.use((req, res, next) => SMH(req, res, next));
 app.use("/api/get/", getApiRoutes);
 app.use("/api/auth", AuthRouter);
 app.use("/api/extra/", ExtraRouter);
+app.use("/api/kathaoperations/", KathaOperationssRouter)
+app.use("/api/getshortthings/", ShortThingsRouter)
 
 
 

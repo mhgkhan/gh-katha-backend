@@ -1,4 +1,6 @@
 import UserAccountModel from "../Models/UserAccount.js";
+import JWT from 'jsonwebtoken';
+
 
 export const postDataValidation = (arr) => {
     for (let i = 0; i < arr.length; i++) {
@@ -35,4 +37,33 @@ export const checkIfuserExists = async (cnic) => {
 
 
 
+export const checkJWTandeCheckIsValid = async (token) => {
+    try {
+        
+        const checKingToken = JWT.verify(token, process.env.SECRET_KEY_LOCAL);
+        const { cnic } = checKingToken;
+
+        const checkingCnic = await checkIfuserExists(cnic);
+
+        if (checkingCnic.status) {
+            if (cnic == checkingCnic.user.cnic) {
+                return {
+                    status: true,
+                    cnic: cnic
+                };
+            }
+            else {
+                return {
+                    status: false
+                }
+            }
+        }
+        else {
+            return { status: false }
+        }
+
+    } catch (error) {
+        return { status: false }
+    }
+}
 

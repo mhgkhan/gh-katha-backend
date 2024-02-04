@@ -26,5 +26,5 @@ class ExtraRoutesHanlders {
         }
     }
 }
-
+    
 export default ExtraRoutesHanlders

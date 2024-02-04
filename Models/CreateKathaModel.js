@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const creteKathaModel = mongoose.model({
+const creteKathaModel = mongoose.Schema({
     cimage: String,
     ccnic: String,
     fullname: {
@@ -12,7 +12,8 @@ const creteKathaModel = mongoose.model({
     },
     cnic: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     phone: {
         type: String,
@@ -25,6 +26,13 @@ const creteKathaModel = mongoose.model({
     address: {
         type: String,
         required: true
+    },
+    author: {
+        type: String,
+        required: true
+    },
+    verfied: {
+        type: String
     }
 }, {
     timestamps: true
