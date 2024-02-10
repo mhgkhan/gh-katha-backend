@@ -39,8 +39,15 @@ export const checkIfuserExists = async (cnic) => {
 
 export const checkJWTandeCheckIsValid = async (token) => {
     try {
-        
-        const checKingToken = JWT.verify(token, process.env.SECRET_KEY_LOCAL);
+
+        let checKingToken;
+        try {
+            checKingToken = JWT.verify(token, process.env.SECRET_KEY_LOCAL);
+        } catch (error) {
+            return {
+                status: false
+            }
+        }
         const { cnic } = checKingToken;
 
         const checkingCnic = await checkIfuserExists(cnic);

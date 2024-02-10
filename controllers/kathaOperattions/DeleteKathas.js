@@ -11,7 +11,7 @@ class DeleteInKhatas {
             try {
                 const deleteIsExistsKatha = await CKModel.findOneAndDelete({ author: req.userCnic},{id:kathaId});
                 // const deleteIsExistsKatha = await CKModel.findOne({author:req.user})
-                console.log(deleteIsExistsKatha)
+                // console.log(deleteIsExistsKatha)
 
                 return res.status(200).json({
                     success: true, message: "Katha has been deleted..", dbresponse: deleteIsExistsKatha

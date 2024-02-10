@@ -33,7 +33,7 @@ class sendInfoHandlers {
             // reading the history of the katha on this id (kathaId)
             
             const historyKathas = await historyModel.find({kathaId});
-            console.log(historyKathas)
+            // console.log(historyKathas)
             return res.status(200).json({success:true,historyKathas});
 
         } catch (error) {

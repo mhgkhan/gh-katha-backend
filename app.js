@@ -8,7 +8,7 @@ const app = express();
 
 // imports 
 import connectToDb from './db/ConnectionDB.js';
-import SMH from './controllers/StartMiddleWareHandler.js';
+import SMH from './middlewares/StartMiddleWareHandler.js';
 
 // imported routes 
 import getApiRoutes from './routes/getApiRoutes.js';

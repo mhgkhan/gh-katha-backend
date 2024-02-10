@@ -1,11 +1,14 @@
-import JWT from 'jsonwebtoken';
 import { checkJWTandeCheckIsValid } from './utilityFunctions.js';
 
 export const checkIsUserAuthorized = async (req, res, next) => {
     try {
 
         let token;
-        req.headers['token'] ? token = req.headers['token'] : res.status(401).json({ succcess: false, message: "user is unauthorized." })
+        try {
+            req.headers['token'] ? token = req.headers['token'] : res.status(401).json({ succcess: false, message: "user is unauthorized." })
+        } catch (error) {
+            return res.status(401).json({succcess:false,message:"user is unauthorized.."})
+        }
 
         if (token.length < 30) return res.status(401).json({ succcess: false, message: "invilid token" })
         else {
@@ -15,7 +18,6 @@ export const checkIsUserAuthorized = async (req, res, next) => {
                 next();
             }
             else return res.status(401).json({ succcess: false, message: "User is not authorized.." })
-
         }
     } catch (error) {
         return res.status(500).json({ succcess: false, message: "Internal Server Error #JWT MIDDLEWARE" })

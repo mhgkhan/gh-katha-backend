@@ -117,7 +117,9 @@ class handleAuthRoutes {
     static handleCheck = async (req, res) => {
         try {
             let token;
-            req.headers['token'] ? token = req.headers['token'] : res.status(401).json({ success: false });
+
+            if (req.headers['token']) token = req.headers['token']
+            else return res.status(401).json({ success: false, message: "user is unauthorized.." })
 
             const checkingUser = await checkJWTandeCheckIsValid(token);
 

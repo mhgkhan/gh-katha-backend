@@ -56,12 +56,12 @@ class KathasPostHandlers {
     static addNewBill = async (req, res) => {
         try {
 
-            console.log(req.body);
+            // console.log(req.body);
 
             try {
 
                 const { allBillData, total, wasool, netTotal, kathaid } = req.body
-                console.log(kathaid)
+                // console.log(kathaid)
 
                 // reading the netAmountModel user data
                 const netAmount = await netAmountModel.findOne({ kathaId: kathaid });
@@ -69,7 +69,7 @@ class KathasPostHandlers {
 
                 // reading the total sell form CKModel
                 const authorDetails = await CKModel.findOne({ author: req.userCnic });
-                console.log(authorDetails)
+                // console.log(authorDetails)
 
                 if (netAmount == null || netAmount == "null") {
                     const addedToNetAmount = new netAmountModel({
@@ -80,7 +80,7 @@ class KathasPostHandlers {
                     await addedToNetAmount.save();
                 }
                 else {
-                    console.log("and the else option", netAmount)
+                    // console.log("and the else option", netAmount)
                     const findAndUpdate = await netAmountModel.findOneAndUpdate({ kathaId: kathaid }, {
                         $set: { totalSell: netAmount.totalSell + total, totalBakya: netAmount.totalBakya + (total - wasool) }
                     })
