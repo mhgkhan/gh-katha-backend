@@ -42,6 +42,7 @@ app.use("/api/getshortthings/", ShortThingsRouter)
 app.get("/api/test", (req,res)=>{
     return res.status(200).json({success:true,message:"Asslam U Alikumm....."})
 })
+app.get("/", (req,res)=>{return res.status(200).json({success:true,message:"hello world"})})
 
 
 
