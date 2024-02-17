@@ -39,6 +39,9 @@ app.use("/api/auth", AuthRouter);
 app.use("/api/extra/", ExtraRouter);
 app.use("/api/kathaoperations/", KathaOperationssRouter)
 app.use("/api/getshortthings/", ShortThingsRouter)
+app.get("/api/test", (req,res)=>{
+    return res.status(200).json({success:true,message:"Asslam U Alikumm....."})
+})
 
 
 
