@@ -16,6 +16,7 @@ import AuthRouter from './routes/Auth.js';
 import ExtraRouter from './routes/ExtraRoute.js';
 import KathaOperationssRouter from './routes/KathaOperationosRoute.js';
 import ShortThingsRouter from './routes/ShortThingsRoutes.js';
+import BillOperationRouter from './routes/BillOperations.js';
 
 
 const PORT = process.env.PORT || 4000;
@@ -30,7 +31,7 @@ app.use(cors())
 connectToDb(DBURI);
 
 
-app.use((req, res, next) => SMH(req, res, next));
+// app.use((req, res, next) => SMH(req, res, next));
 
 
 // ROUTES 
@@ -39,6 +40,9 @@ app.use("/api/auth", AuthRouter);
 app.use("/api/extra/", ExtraRouter);
 app.use("/api/kathaoperations/", KathaOperationssRouter)
 app.use("/api/getshortthings/", ShortThingsRouter)
+app.use("/api/bill/", BillOperationRouter);
+
+
 app.get("/api/test", (req,res)=>{
     return res.status(200).json({success:true,message:"Asslam U Alikumm....."})
 })
@@ -47,4 +51,4 @@ app.get("/", (req,res)=>{return res.status(200).json({success:true,message:"hell
 
 
 
-app.listen(PORT, () => console.log(`ON LOCAL SERVER CHECK :  http://localhost:${PORT}/api/get\nON PRODUCTION SERVER  :  https://commingsoon.com/don'tclickit`))
+app.listen(PORT, () => console.log(`${app.get("env")=="development"?"Check on http://localhost:"+PORT:"PRODUCTION SERVER HAS STARTED SUCESSFULLY..."}`))

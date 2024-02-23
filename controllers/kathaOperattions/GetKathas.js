@@ -21,7 +21,8 @@ class GetKatha {
                     success: true, message: "your katha is here",
                     info: thisKatha,
                     totalSell: 0,
-                    bakya: 0
+                    totalBakya: 0,
+                    lastUpdate:""
                 })
             }
             else { }
@@ -31,11 +32,12 @@ class GetKatha {
                 success: true, message: "your katha is here",
                 info: thisKatha,
                 totalSell: fetchTotalAmounts == null ? 0 : fetchTotalAmounts.totalSell,
-                totalBakya: fetchTotalAmounts == null ? 0 : fetchTotalAmounts.totalBakya
+                totalBakya: fetchTotalAmounts == null ? 0 : fetchTotalAmounts.totalBakya,
+                lastUpdate:fetchTotalAmounts.updatedAt
             })
 
         } catch (error) {
-            return res.status(500).json({ success: true, message: "INTERNAL SERVER ERROR" })
+            return res.status(500).json({ success: false, message: "INTERNAL SERVER ERROR" })
         }
     }
 

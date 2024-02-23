@@ -93,7 +93,8 @@ class KathasPostHandlers {
                     products_total_money: total,
                     products_wasool_money: wasool,
                     products_bakya_money: total - wasool,
-                    kathaId: kathaid
+                    kathaId: kathaid,
+                    author:req.userCnic
                 })
                 await appendtoHistoryModel.save();
 

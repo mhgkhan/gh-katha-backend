@@ -20,6 +20,7 @@ const historySchema = mongoose.Schema({
         required: true
     },
     kathaId: String,
+    author: String
 
 }, {
     timestamps: true

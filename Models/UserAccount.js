@@ -10,23 +10,10 @@ const userAccountSchema = mongoose.Schema({
         type:String,
         required:true,
         unique:true,
-        min:10
-    },
-    phone:{
-        type:String,
-        required:true,
-        unique:true,
-        min:3,
-    },
-    email:{
-        type:String,
-        required:true,
-        unique:true,
     },
     password:{
         type:String,
-        required:true,
-        min:7
+        required:true
     }
 },{
     timestamps:true

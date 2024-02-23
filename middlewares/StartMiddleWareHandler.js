@@ -9,24 +9,33 @@ const SMH = async (req, res, next) => {
 
     let platForm;
     req.headers['sec-ch-ua-platform'] ? platForm = req.headers['sec-ch-ua-platform'] : "";
-
-    try {
-        const visitorColl = new VisitorCollection({
-            url: req.url,
-            date: thisDate.toLocaleDateString(),
-            time: thisDate.toLocaleTimeString(),
-            platform: platForm,
-            userid: randomValue
-        });
-
-        await visitorColl.save();
-
-        req.useridUnique = randomValue;
-        return next();
-
-    } catch (error) {
-        return res.status(500).json({ error: "Server Error", message: JSON.stringify(error) })
+    // let recieveIdl;
+    // req.headers['recieveId']? recieveIdl = req.headers['recieveId'] : null;
+    if (req.headers['recieveId']) {
+        req.useridUnique = req.headers['recieveId']
+        next();
     }
+    else {
+        try {
+            const visitorColl = new VisitorCollection({
+                url: req.url,
+                date: thisDate.toLocaleDateString(),
+                time: thisDate.toLocaleTimeString(),
+                platform: platForm,
+                userid: randomValue
+            });
+
+            await visitorColl.save();
+
+            req.useridUnique = randomValue;
+            return next();
+
+        } catch (error) {
+            return res.status(500).json({ error: "Server Error", message: JSON.stringify(error) })
+        }
+    }
+
+
 
 }
 export default SMH;

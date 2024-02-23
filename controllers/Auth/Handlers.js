@@ -21,11 +21,12 @@ class handleAuthRoutes {
      */
     static handleSignup = async (req, res) => {
         try {
-            let { cnic, email, phone, password, confirmpassword } = req.body;
-            const checkValidation = postDataValidation([cnic, email, password]);
-            const cryptoRandom = crypto.randomBytes(2).toString("hex");
+            // let { cnic, email, phone, password, confirmpassword } = req.body;
+            let { cnic, password, confirmpassword } = req.body;
+            const checkValidation = postDataValidation([cnic, password]);
+            const cryptoRandom = crypto.randomBytes(1).toString("hex");
 
-            if (password === confirmpassword) {
+            if (password === confirmpassword && cnic.length>10) {
                 if (!checkValidation) return res.status(400).json({ success: false, message: "All fields are required.." })
                 else {
                     const checkUserExists = await checkIfuserExists(cnic);
@@ -34,13 +35,16 @@ class handleAuthRoutes {
                     if (!checkUserExists.status) {
                         // console.log("1")
                         let newPassword = await bcrypt.hash(req.body.password, 10);
-                        const username = `${email.substring(0, email.indexOf("@"))}-${cryptoRandom}`;
+                        // const username = `${email.substring(0, 5)}-${cryptoRandom}`;
+                        const username = `usr-${cnic.substring(5,9)}${Math.floor(Math.random(0,99))}${cryptoRandom}`
+                        // console.log(username)
                         // console.log("username", username, "password = ", password)
 
-                        const addingData = new UserAccountModel({ username, cnic, phone, email, password: newPassword })
+                        const addingData = new UserAccountModel({ username, cnic, password: newPassword })
                         try {
                             await addingData.save();
                         } catch (error) {
+                            console.log(error);
                             if (error.message?.substring(0, 26) == "E11000 duplicate key error") {
                                 return res.status(401).json({ success: false, message: "your values is already exists try to use different one.." })
                             }
@@ -58,7 +62,7 @@ class handleAuthRoutes {
                     }
                 }
             }
-            else return res.status(400).json({ success: false, message: "confirm password not matched.." })
+            else return res.status(400).json({ success: false, message: "Your value is not valid"})
 
         } catch (error) {
             return res.status(500).json({ success: false, message: JSON.stringify(error) })
