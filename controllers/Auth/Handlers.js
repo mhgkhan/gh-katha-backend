@@ -19,6 +19,7 @@ class handleAuthRoutes {
      * *** SAVING NEW USER CREDIENTIALS TO MONGO DATABASE
      * SEND RESPONSE *
      */
+
     static handleSignup = async (req, res) => {
         try {
             // let { cnic, email, phone, password, confirmpassword } = req.body;
@@ -26,21 +27,16 @@ class handleAuthRoutes {
             const checkValidation = postDataValidation([cnic, password]);
             const cryptoRandom = crypto.randomBytes(1).toString("hex");
 
-            if (password === confirmpassword && cnic.length>10) {
+            if (password === confirmpassword && cnic.length > 10) {
                 if (!checkValidation) return res.status(400).json({ success: false, message: "All fields are required.." })
                 else {
                     const checkUserExists = await checkIfuserExists(cnic);
-                    // console.log(checkUserExists);
 
                     if (!checkUserExists.status) {
-                        // console.log("1")
-                        let newPassword = await bcrypt.hash(req.body.password, 10);
-                        // const username = `${email.substring(0, 5)}-${cryptoRandom}`;
-                        const username = `usr-${cnic.substring(5,9)}${Math.floor(Math.random(0,99))}${cryptoRandom}`
-                        // console.log(username)
-                        // console.log("username", username, "password = ", password)
 
-                        const addingData = new UserAccountModel({ username, cnic, password: newPassword })
+                        let newPassword = await bcrypt.hash(req.body.password, 10);
+
+                        const addingData = new UserAccountModel({ cnic, password: newPassword, verified: false })
                         try {
                             await addingData.save();
                         } catch (error) {
@@ -55,6 +51,7 @@ class handleAuthRoutes {
                         const cnicToken = { cnic: cnic, password: newPassword }
 
                         const token = JWT.sign(cnicToken, process.env.SECRET_KEY_LOCAL)
+                        // console.log(addingData)
                         return res.status(200).json({ success: true, message: "Singup sucessfull", token: token });
                     }
                     else {
@@ -62,7 +59,7 @@ class handleAuthRoutes {
                     }
                 }
             }
-            else return res.status(400).json({ success: false, message: "Your value is not valid"})
+            else return res.status(400).json({ success: false, message: "Your value is not valid" })
 
         } catch (error) {
             return res.status(500).json({ success: false, message: JSON.stringify(error) })
@@ -103,7 +100,7 @@ class handleAuthRoutes {
                             password: checkUserExists.password
                         }
                         const token = JWT.sign(cnicToken, process.env.SECRET_KEY_LOCAL)
-                        return res.status(200).json({ success: true, message: "Signin sucessfull", token: token });
+                        return res.status(200).json({ success: true, message: "Signin sucessfull", token: token, verified: checkUserExists.user.verified });
                     }
                     else return res.status(401).json({ success: false, message: "Incorrect password" })
                 }
@@ -127,7 +124,10 @@ class handleAuthRoutes {
 
             const checkingUser = await checkJWTandeCheckIsValid(token);
 
-            if (checkingUser.status) return res.status(200).json({ success: true, cnic: checkingUser.cnic })
+            if (checkingUser.status) {
+                return res.status(200).json({ success: true, cnic: checkingUser.cnic, verified: checkingUser.verified })
+            }
+
             else return res.status(401).json({ success: false, message: "User is not authorized." })
 
         } catch (error) {

@@ -21,7 +21,7 @@ import BillOperationRouter from './routes/BillOperations.js';
 
 const PORT = process.env.PORT || 4000;
 
-const DBURI = app.get("env") == "development" ? process.env.DBURILOCAL : process.env.DBURIPROD;
+const DBURI = app.get("env") == "development" ? process.env.DBURILOCAL : process.env.PROD;
 
 
 
