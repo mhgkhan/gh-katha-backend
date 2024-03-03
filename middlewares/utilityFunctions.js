@@ -51,6 +51,7 @@ export const checkJWTandeCheckIsValid = async (token) => {
         const { cnic } = checKingToken;
 
         const checkingCnic = await checkIfuserExists(cnic);
+        // console.log(checkingCnic)
 
         if (checkingCnic.status) {
             if (cnic == checkingCnic.user.cnic) {
@@ -58,7 +59,7 @@ export const checkJWTandeCheckIsValid = async (token) => {
                 return {
                     status: true,
                     cnic: cnic,
-                    verified: checkingCnic.verified
+                    verified: checkingCnic.user.verified
                 };
             }
             else {

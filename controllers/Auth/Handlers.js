@@ -125,6 +125,7 @@ class handleAuthRoutes {
             const checkingUser = await checkJWTandeCheckIsValid(token);
 
             if (checkingUser.status) {
+                // console.log(checkingUser)
                 return res.status(200).json({ success: true, cnic: checkingUser.cnic, verified: checkingUser.verified })
             }
 
@@ -136,6 +137,55 @@ class handleAuthRoutes {
     }
 
 
+
+
+
+    static checkProfile = async (req, res) => {
+        try {
+            // console.log(req.userCnic)
+            // req.userCnic ? "" : res.status(500).json({ success: false, message: "Some Error occured with your account. please loged in again" })
+            const checkUserData = await UserAccountModel.findOne({ cnic: req.userCnic });
+
+            return res.status(200).json({
+                success: true, userData: checkUserData
+            })
+
+        } catch (error) {
+            return res.status(500).json({ success: false, message: "Internal Server Error" })
+        }
+    }
+
+
+
+
+    static updateUserInfo = async (req, res) => {
+        try {
+            // console.log(req.body)
+
+            if (req.userCnic == req.body.cnic) {
+                const updition = await UserAccountModel.findOneAndUpdate({ cnic: req.userCnic }, {
+                    $set: {
+                        ...req.body,
+                        verified: true
+                    }
+                })
+                return res.status(201).json({
+                    success: true, message: "You profile has been updated...",
+                    updated: updition
+                })
+            }
+            else {
+                return res.status(400).json({
+                    success: false, message: "Bad Request."
+                })
+            }
+
+        } catch (error) {
+            return res.status(500).json({
+                success: false, message: "Internal Server Error"
+            })
+        }
+    }
 
 
 

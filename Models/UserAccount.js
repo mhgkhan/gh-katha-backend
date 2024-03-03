@@ -10,7 +10,7 @@ const userAccountSchema = mongoose.Schema({
     password: {
         type: String,
         required: true
-    },
+    }, 
     fullname: String,
     phone: String,
     easypisanumber: String,
@@ -21,7 +21,7 @@ const userAccountSchema = mongoose.Schema({
     image: String,
     description: String,
     verified: {
-        type: Boolean, 
+        type: Boolean,
         required: true
     }
 }, {
