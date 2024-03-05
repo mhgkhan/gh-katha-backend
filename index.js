@@ -51,4 +51,4 @@ app.get("/api/test", (req,res)=>{
 
 
 
-// app.listen(PORT, () => console.log(`${app.get("env")=="development"?"Check on http://localhost:"+PORT:"PRODUCTION SERVER HAS STARTED SUCESSFULLY..."}`))
+app.listen(PORT, () => console.log(`${app.get("env")=="development"?"Check on http://localhost:"+PORT:"PRODUCTION SERVER HAS STARTED SUCESSFULLY..."}`))

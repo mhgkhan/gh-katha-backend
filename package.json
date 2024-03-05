@@ -2,11 +2,11 @@
   "name": "gh-katha-backend",
   "version": "1.0.0",
   "description": "A complete backend for gh-katha",
-  "main": "server.js",
+  "main": "index.js",
   "type": "module",
   "scripts": {
     "test":"node server.js",
-    "start": "node server.js",
+    "start": "node index.js",
     "dev": "nodemon server.js"
   },
   "keywords": [
